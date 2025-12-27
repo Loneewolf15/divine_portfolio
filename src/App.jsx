@@ -22,35 +22,49 @@ const ScrollToTop = () => {
 };
 
 
+const Layout = ({ children }) => {
+  const location = useLocation();
+  // Hide Navbar on blog and admin pages (routes starting with /blog or /admin)
+  const hideNavbar = location.pathname.startsWith("/blog") || location.pathname.startsWith("/admin");
+
+  return (
+    <>
+      <ScrollToTop />
+      {!hideNavbar && <Navbar />}
+      {children}
+      <Footer />
+    </>
+  );
+};
+
 const App = () => {
   return (
     <BrowserRouter>
-      <ScrollToTop />
-      <Navbar />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/blog" element={<Blog />} />
-        <Route path="/blog/:id" element={<BlogPost />} />
+      <Layout>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/blog" element={<Blog />} />
+          <Route path="/blog/:id" element={<BlogPost />} />
 
-        {/* Admin Routes */}
-        <Route path="/admin/login" element={<Login />} />
-        <Route path="/admin" element={
-          <ProtectedRoute>
-            <Dashboard />
-          </ProtectedRoute>
-        } />
-        <Route path="/admin/new" element={
-          <ProtectedRoute>
-            <PostEditor />
-          </ProtectedRoute>
-        } />
-        <Route path="/admin/edit/:id" element={
-          <ProtectedRoute>
-            <PostEditor />
-          </ProtectedRoute>
-        } />
-      </Routes>
-      <Footer />
+          {/* Admin Routes */}
+          <Route path="/admin/login" element={<Login />} />
+          <Route path="/admin" element={
+            <ProtectedRoute>
+              <Dashboard />
+            </ProtectedRoute>
+          } />
+          <Route path="/admin/new" element={
+            <ProtectedRoute>
+              <PostEditor />
+            </ProtectedRoute>
+          } />
+          <Route path="/admin/edit/:id" element={
+            <ProtectedRoute>
+              <PostEditor />
+            </ProtectedRoute>
+          } />
+        </Routes>
+      </Layout>
     </BrowserRouter>
   );
 };
