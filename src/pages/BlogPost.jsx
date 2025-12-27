@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { getPost } from "../services/api";
+import ReactMarkdown from 'react-markdown';
 
 const BlogPost = () => {
     const { id } = useParams();
@@ -70,7 +71,20 @@ const BlogPost = () => {
 
                 <div className="prose prose-xl prose-invert max-w-none text-white-600">
                     <div className="bg-black-200/30 backdrop-blur-sm border border-white/5 rounded-3xl p-8 md:p-12">
-                        <div className="whitespace-pre-wrap leading-relaxed">{post.content}</div>
+                        <ReactMarkdown
+                            className="whitespace-pre-wrap leading-relaxed space-y-4"
+                            components={{
+                                img: ({ node, ...props }) => <img {...props} className="rounded-xl border border-white/10 w-full" />,
+                                h1: ({ node, ...props }) => <h1 {...props} className="text-3xl font-bold text-blue-400 mt-8 mb-4" />,
+                                h2: ({ node, ...props }) => <h2 {...props} className="text-2xl font-bold text-white mt-8 mb-4" />,
+                                p: ({ node, ...props }) => <p {...props} className="text-white-600 leading-7 mb-4" />,
+                                a: ({ node, ...props }) => <a {...props} className="text-blue-400 hover:text-blue-300 underline" target="_blank" rel="noopener noreferrer" />,
+                                ul: ({ node, ...props }) => <ul {...props} className="list-disc list-inside space-y-2 mb-4" />,
+                                ol: ({ node, ...props }) => <ol {...props} className="list-decimal list-inside space-y-2 mb-4" />,
+                            }}
+                        >
+                            {post.content}
+                        </ReactMarkdown>
                     </div>
                 </div>
             </div>
